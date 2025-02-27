@@ -1,0 +1,26 @@
+{
+  "categories": [
+    { "id": 1, "name": "Work", "color": "#ff5733", "logo": "📝" },
+    { "id": 2, "name": "Personal", "color": "#33ff57", "logo": "❤️" },
+    { "id": 3, "name": "Shopping", "color": "#3357ff", "logo": "🛒" },
+    { "id": 4, "name": "Health", "color": "#ffeb3b", "logo": "💪" },
+    { "id": 5, "name": "Fitness", "color": "#8bc34a", "logo": "🏋️‍♂️" },
+    { "id": 6, "name": "Education", "color": "#2196f3", "logo": "🎓" },
+    { "id": 7, "name": "Finance", "color": "#9c27b0", "logo": "💰" },
+    { "id": 10, "name": "Sajid", "color": "#9c27b0", "logo": "🔥" }
+  ],
+  "todos": [
+    { "id": 1, "title": "Complete project report", "description": "Finish writing the final report", "status": "in-progress", "priority": "high", "due_date": "2025-03-05", "category_id": 1, "tags": ["work", "deadline"], "reminder": "2025-03-04T09:00:00Z" },
+    { "id": 2, "title": "Team meeting", "description": "Weekly sprint planning", "status": "pending", "priority": "medium", "due_date": "2025-03-01", "category_id": 1, "tags": ["work", "meeting"], "reminder": "2025-03-01T10:00:00Z" },
+    { "id": 3, "title": "Buy groceries", "description": "Milk, eggs, bread, vegetables", "status": "pending", "priority": "medium", "due_date": "2025-02-28", "category_id": 3, "tags": ["shopping", "home"], "reminder": "2025-02-28T15:00:00Z" },
+    { "id": 4, "title": "Order new laptop", "description": "Purchase MacBook for work", "status": "pending", "priority": "high", "due_date": "2025-03-07", "category_id": 3, "tags": ["shopping", "electronics"], "reminder": "2025-03-07T12:00:00Z" },
+    { "id": 5, "title": "Workout session", "description": "Morning gym workout", "status": "completed", "priority": "high", "due_date": "2025-02-27", "category_id": 5, "tags": ["fitness", "health"], "reminder": "2025-02-27T07:00:00Z" },
+    { "id": 6, "title": "Doctor's appointment", "description": "Annual health checkup", "status": "pending", "priority": "high", "due_date": "2025-02-28", "category_id": 4, "tags": ["health", "doctor"], "reminder": "2025-02-28T08:00:00Z" },
+    { "id": 7, "title": "Read 'Design Patterns' book", "description": "Read chapter on Singleton pattern", "status": "pending", "priority": "low", "due_date": "2025-03-01", "category_id": 6, "tags": ["education", "reading"], "reminder": "2025-03-01T09:00:00Z" },
+    { "id": 8, "title": "Complete online course", "description": "Finish JavaScript certification", "status": "in-progress", "priority": "high", "due_date": "2025-03-15", "category_id": 6, "tags": ["education", "coding"], "reminder": "2025-03-14T18:00:00Z" },
+    { "id": 9, "title": "Monthly budget planning", "description": "Review and allocate expenses", "status": "pending", "priority": "medium", "due_date": "2025-03-02", "category_id": 7, "tags": ["finance", "budgeting"], "reminder": "2025-03-02T20:00:00Z" },
+    { "id": 10, "title": "Tax filing", "description": "Prepare and submit tax documents", "status": "pending", "priority": "high", "due_date": "2025-04-01", "category_id": 7, "tags": ["finance", "taxes"], "reminder": "2025-03-31T10:00:00Z" },
+    { "id": 10, "title": "Tax filing", "description": "Prepare and submit tax documents", "status": "pending", "priority": "high", "due_date": "2025-04-01", "category_id": 2, "tags": ["finance", "taxes"], "reminder": "2025-03-31T10:00:00Z" },
+    { "id": 3, "title": "Buy groceries", "description": "Milk, eggs, bread, vegetables", "status": "pending", "priority": "medium", "due_date": "2025-02-28", "category_id": 2, "tags": ["shopping", "home"], "reminder": "2025-02-28T15:00:00Z" }
+  ]
+}

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid #3d5166;
+        }
+
+        .sidebar-header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .categories {
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .category-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .category-list {
+            list-style: none;
+        }
+
+        .category-item {
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+
+        .category-item:hover {
+            background-color: #34495e;
+        }
+
+        .category-item.active {
+            background-color: #3498db;
+        }
+
+        .category-icon {
+            margin-right: 10px;
+            width: 16px;
+            text-align: center;
+        }
+
+        .category-name {
+            flex-grow: 1;
+        }
+
+        .task-count {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 2px 8px;
+            font-size: 12px;
+        }
+
+        .add-category {
+            margin-top: 20px;
+            padding: 10px 15px;
+            border: 2px dashed #3d5166;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .add-category:hover {
+            border-color: #3498db;
+            color: #3498db;
+        }
+
+        .add-icon {
+            margin-right: 10px;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .content-header {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .content-title {
+            font-size: 28px;
+            color: #2c3e50;
+        }
+
+        .add-task-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .add-task-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .add-task-btn .add-icon {
+            margin-right: 8px;
+        }
+
+        /* Task Grid */
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* Task Card Styles */
+        .task-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .task-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            padding: 15px;
+            border-bottom: 1px solid #ecf0f1;
+            position: relative;
+        }
+
+        .card-status {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+
+        .status-completed {
+            background-color: #2ecc71;
+        }
+
+        .status-in-progress {
+            background-color: #3498db;
+        }
+
+        .status-pending {
+            background-color: #f39c12;
+        }
+
+        .card-priority {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .priority-high {
+            background-color: #ff7675;
+            color: white;
+        }
+
+        .priority-medium {
+            background-color: #fdcb6e;
+            color: #7f8c8d;
+        }
+
+        .priority-low {
+            background-color: #55efc4;
+            color: #2c3e50;
+        }
+
+        .card-title {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        .card-description {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .due-date {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        .due-soon {
+            color: #e74c3c;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .tag {
+            background-color: #ecf0f1;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        .card-footer {
+            padding: 10px 15px;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        .card-status-text {
+            font-size: 14px;
+            color: #7f8c8d;
+            text-transform: capitalize;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .card-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #7f8c8d;
+            transition: color 0.2s;
+            font-size: 16px;
+        }
+
+        .card-btn:hover {
+            color: #3498db;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+                padding: 15px 0;
+            }
+
+            .sidebar.expanded {
+                width: 280px;
+            }
+
+            .sidebar-header h1 {
+                display: none;
+            }
+
+            .sidebar.expanded .sidebar-header h1 {
+                display: block;
+            }
+
+            .category-name, .task-count, .category-title, .add-category span {
+                display: none;
+            }
+
+            .sidebar.expanded .category-name, 
+            .sidebar.expanded .task-count, 
+            .sidebar.expanded .category-title,
+            .sidebar.expanded .add-category span {
+                display: block;
+            }
+
+            .category-item {
+                justify-content: center;
+                padding: 12px 5px;
+            }
+
+            .sidebar.expanded .category-item {
+                justify-content: flex-start;
+                padding: 12px 15px;
+            }
+
+            .add-category {
+                justify-content: center;
+            }
+
+            .sidebar.expanded .add-category {
+                justify-content: flex-start;
+            }
+
+            .task-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        /* Mobile menu toggle button */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 100;
+            cursor: pointer;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+        }
+
+        @media (max-width: 480px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                height: 100%;
+                z-index: 99;
+            }
+
+            .sidebar.mobile-open {
+                left: 0;
+            }
+
+            .main-content {
+                padding: 20px;
+                padding-top: 60px;
+            }
+
+            .task-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #7f8c8d;
+        }
+
+        .empty-state-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .empty-state h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile menu toggle -->
+    <button class="menu-toggle">☰</button>
+    
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h1>My Todo App</h1>
+        </div>
+        <div class="categories">
+            <h2 class="category-title">Categories</h2>
+            <ul class="category-list" id="categoryList">
+                 
+                 
+            </ul>
+            <div class="add-category">
+                <div class="add-icon">+</div>
+                <span>Add New Category</span>
+            </div>
+
+
+
+
+            
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="content-header">
+            <h1 class="content-title" style="font-size: 2.5rem; font-weight: bold; color: #2c3e50; text-transform: capitalize; text-align: center; padding: 10px; border-bottom: 3px solid #3498db; display: inline-block;">
+                All Tasks in the Work Category
+            </h1>
+            
+            <button class="add-task-btn">
+                <span class="add-icon">+</span>
+                Add New Task
+            </button>
+        </div>
+        
+        <!-- Task Grid -->
+        <div class="task-grid" id="taskGrid">
+            <!-- Task Card 1 -->
+            <!-- <div class="task-card">
+                <div class="card-header">
+                    <div class="card-status status-in-progress"></div>
+                    <span class="card-priority priority-high">high</span>
+                    <h3 class="card-title">Complete project report</h3>
+                    <p class="card-description">Finish writing the final report for the project</p>
+                    <div class="due-date due-soon">
+                        <span>Due: Mar 5, 2025</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-meta">
+                        <span>Created: Feb 27, 2025</span>
+                        <span>ID: 1</span>
+                    </div>
+                    <div class="card-tags">
+                        <span class="tag">work</span>
+                        <span class="tag">deadline</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="card-status-text">
+                        in progress
+                    </div>
+                    <div class="card-actions">
+                        <button class="card-btn edit-btn">✏️</button>
+                        <button class="card-btn delete-btn">🗑️</button>
+                    </div>
+                </div>
+            </div> -->
+            
+             
+             <!-- //remaining task -->
+            
+        </div>
+    </div>
+
+    <script src="./script.js">
+        
+    </script>
+</body>
+</html>
